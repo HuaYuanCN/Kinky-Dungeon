@@ -1,0 +1,67 @@
+canvas {
+	padding: 0;
+	margin: auto;
+	outline: none;
+	display: block;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  position: absolute;
+  width: 100%;
+}
+@media (min-aspect-ratio: 2/1) {
+  canvas {
+    width: unset;
+    height: 100%;
+  }
+}
+input {
+	background: white;
+}
+textarea {
+	background: white;
+	resize: none;
+}
+* { -webkit-tap-highlight-color:rgba(0,0,0,0); }
+
+.custom-select {
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: black;
+  padding: 0.2em;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: white;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: cyan;
+}
+
+input[type=text]:invalid {
+  background-color: #fbb;
+  box-shadow: 0 0 3px 2px #c22;
+}

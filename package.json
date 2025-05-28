@@ -1,0 +1,8 @@
+{
+  "name": "Kinky Dungeon",
+  "version": "5.1.12",
+  "description": "A devious roguelike",
+  "main": "electron.js",
+  "author": "Ada18980",
+  "license": "Mozilla Public License"
+}
