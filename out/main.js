@@ -412,6 +412,9 @@ let MouseY = 0;
 function MouseIn(Left, Top, Width, Height) {
     return MouseXIn(Left, Width) && MouseYIn(Top, Height);
 }
+function PointIn(X, Y, Left, Top, Width, Height) {
+    return (X >= Left) && (X <= Left + Width) && (Y >= Top) && (Y <= Top + Height);
+}
 function MouseXIn(Left, Width) {
     return (MouseX >= Left) && (MouseX <= Left + Width);
 }
@@ -2164,105 +2167,123 @@ let KDClassSynonyms = {
 };
 let KDNoMulticlass = {};
 let KDClassStart = {
-    "Fighter": () => {
-        KinkyDungeonInventoryAddWeapon("Shield");
-        KinkyDungeonInventoryAddWeapon("Sword");
-        if (!KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("Breastplate"), 0, true, ""))
-            KinkyDungeonInventoryAddLoose("Breastplate");
-        KDGameData.PreviousWeapon = ["Sword", "Shield", "Unarmed", "Unarmed"];
-        KDSetWeapon("Sword");
-        KDGameData.Offhand = "Shield";
+    "Fighter": (start) => {
+        if (start) {
+            KinkyDungeonInventoryAddWeapon("Shield");
+            KinkyDungeonInventoryAddWeapon("Sword");
+            if (!KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("Breastplate"), 0, true, ""))
+                KinkyDungeonInventoryAddLoose("Breastplate");
+            KDGameData.PreviousWeapon = ["Sword", "Shield", "Unarmed", "Unarmed"];
+            KDSetWeapon("Sword");
+            KDGameData.Offhand = "Shield";
+        }
         KDPushSpell(KinkyDungeonFindSpell("BattleRhythm"));
-        KinkyDungeonSpellChoicesToggle.push(true);
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("Offhand"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("Bondage"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDGameData.StatMaxBonus.WP += 5;
-        KDPushSpell(KinkyDungeonFindSpell("IronWill"));
-        KDPushSpell(KinkyDungeonFindSpell("FighterOffhand"));
-        KinkyDungeonSpellPoints = 3;
-        KDAddConsumable("RedKey", 1);
-        KDAddConsumable("Pick", 2);
-        KinkyDungeonGold = 100;
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionStamina, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 2);
-        KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 10);
-        KinkyDungeonInventoryAddLoose("TrapCuffs", undefined, undefined, 3);
+        if (start) {
+            KinkyDungeonSpellChoicesToggle.push(true);
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("Offhand"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("Bondage"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDGameData.StatMaxBonus.WP += 5;
+            KDPushSpell(KinkyDungeonFindSpell("IronWill"));
+            KDPushSpell(KinkyDungeonFindSpell("FighterOffhand"));
+            KinkyDungeonSpellPoints = 3;
+            KDAddConsumable("RedKey", 1);
+            KDAddConsumable("Pick", 2);
+            KinkyDungeonGold = 100;
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionStamina, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 2);
+            KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 10);
+            KinkyDungeonInventoryAddLoose("TrapCuffs", undefined, undefined, 3);
+        }
     },
-    "Rogue": () => {
-        KinkyDungeonInventoryAddWeapon("Dirk");
-        KinkyDungeonInventoryAddWeapon("Bow");
-        KDGameData.PreviousWeapon = ["Bow", "Dirk", "Unarmed", "Unarmed"];
-        KDSetWeapon("Dirk");
+    "Rogue": (start) => {
+        if (start) {
+            KinkyDungeonInventoryAddWeapon("Dirk");
+            KinkyDungeonInventoryAddWeapon("Bow");
+            KDGameData.PreviousWeapon = ["Bow", "Dirk", "Unarmed", "Unarmed"];
+            KDSetWeapon("Dirk");
+        }
         KDPushSpell(KinkyDungeonFindSpell("RogueTargets"));
-        KDPushSpell(KinkyDungeonFindSpell("Bondage"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDGameData.StatMaxBonus.SP += 5;
-        KDPushSpell(KinkyDungeonFindSpell("Sneaky"));
-        KinkyDungeonSpellPoints = 3;
-        KDAddConsumable("Pick", 3);
-        KinkyDungeonGold = 100;
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionStamina, 2);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.AncientPowerSource, 1);
-        KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 10);
-        KinkyDungeonInventoryAddLoose("TrapGag", undefined, undefined, 3);
+        if (start) {
+            KDPushSpell(KinkyDungeonFindSpell("Bondage"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDGameData.StatMaxBonus.SP += 5;
+            KDPushSpell(KinkyDungeonFindSpell("Sneaky"));
+            KinkyDungeonSpellPoints = 3;
+            KDAddConsumable("Pick", 3);
+            KinkyDungeonGold = 100;
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionStamina, 2);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.AncientPowerSource, 1);
+            KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 10);
+            KinkyDungeonInventoryAddLoose("TrapGag", undefined, undefined, 3);
+        }
     },
-    "Mage": () => {
-        KinkyDungeonInventoryAddWeapon("Knife");
-        KinkyDungeonInventoryAddWeapon("ArcaneTome");
-        KDGameData.PreviousWeapon = ["ArcaneTome", "Knife", "Unarmed", "Unarmed"];
-        KDSetWeapon("ArcaneTome");
+    "Mage": (start) => {
+        if (start) {
+            KinkyDungeonInventoryAddWeapon("Knife");
+            KinkyDungeonInventoryAddWeapon("ArcaneTome");
+            KDGameData.PreviousWeapon = ["ArcaneTome", "Knife", "Unarmed", "Unarmed"];
+            KDSetWeapon("ArcaneTome");
+        }
         KDPushSpell(KinkyDungeonFindSpell("ManaRegen"));
-        KDPushSpell(KinkyDungeonFindSpell("Bondage"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDPushSpell(KinkyDungeonFindSpell("Analyze"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KDGameData.StatMaxBonus.MP += 5;
-        KinkyDungeonSpellPoints = 3;
-        KDAddConsumable("RedKey", 2);
-        KinkyDungeonGold = 100;
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 3);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 1);
-        KinkyDungeonInventoryAddLoose("StrongMagicRopeRaw", undefined, undefined, 10);
+        if (start) {
+            KDPushSpell(KinkyDungeonFindSpell("Bondage"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("CommandWord"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDPushSpell(KinkyDungeonFindSpell("Analyze"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KDGameData.StatMaxBonus.MP += 5;
+            KinkyDungeonSpellPoints = 3;
+            KDAddConsumable("RedKey", 2);
+            KinkyDungeonGold = 100;
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 3);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionFrigid, 1);
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionWill, 1);
+            KinkyDungeonInventoryAddLoose("StrongMagicRopeRaw", undefined, undefined, 10);
+        }
     },
-    "Peasant": () => {
+    "Peasant": (start) => {
         KDPushSpell(KinkyDungeonFindSpell("Peasant"));
-        KDPushSpell(KinkyDungeonFindSpell("Bondage"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KinkyDungeonSpellPoints = 3;
-        KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 3);
+        if (start) {
+            KDPushSpell(KinkyDungeonFindSpell("Bondage"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KinkyDungeonSpellPoints = 3;
+            KinkyDungeonInventoryAddLoose("RopeSnakeRaw", undefined, undefined, 3);
+        }
     },
-    "Trainee": () => {
-        KDPushSpell(KinkyDungeonFindSpell("Bondage"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+    "Trainee": (start) => {
+        if (start) {
+            KDPushSpell(KinkyDungeonFindSpell("Bondage"));
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+        }
         KDPushSpell(KinkyDungeonFindSpell("DistractionCast"));
-        KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
-        KinkyDungeonSpellPoints = 3;
-        KinkyDungeonGold = 100;
-        KDGameData.StatMaxBonus.AP += 2.5;
-        KDGameData.StatMaxBonus.MP += 2.5;
-        KinkyDungeonInventoryAddWeapon("Knife");
-        KDGameData.PreviousWeapon = ["Knife", "Unarmed", "Unarmed", "Unarmed"];
-        KDSetWeapon("Knife");
-        KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 3);
-        KinkyDungeonChangeFactionRep("Apprentice", .2);
-        KinkyDungeonInventoryAddLoose("WeakMagicRopeRaw", undefined, undefined, 10);
-        KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("TrapPlug2"), 0, true, "");
-        KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("TrapBelt"), 10, true, "Gold");
+        if (start) {
+            KinkyDungeonSpellChoices.push(KinkyDungeonSpells.length - 1);
+            KinkyDungeonSpellPoints = 3;
+            KinkyDungeonGold = 100;
+            KDGameData.StatMaxBonus.AP += 2.5;
+            KDGameData.StatMaxBonus.MP += 2.5;
+            KinkyDungeonInventoryAddWeapon("Knife");
+            KDGameData.PreviousWeapon = ["Knife", "Unarmed", "Unarmed", "Unarmed"];
+            KDSetWeapon("Knife");
+            KinkyDungeonChangeConsumable(KinkyDungeonConsumables.PotionMana, 3);
+            KinkyDungeonChangeFactionRep("Apprentice", .2);
+            KinkyDungeonInventoryAddLoose("WeakMagicRopeRaw", undefined, undefined, 10);
+            KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("TrapPlug2"), 0, true, "");
+            KinkyDungeonAddRestraintIfWeaker(KinkyDungeonGetRestraintByName("TrapBelt"), 10, true, "Gold");
+        }
     },
 };
 let KinkyDungeonClassModeChoice = "";
@@ -7512,7 +7533,7 @@ function KinkyDungeonDefaultStats(_Load) {
     KinkyDungeonInitializeDresses();
     KinkyDungeonShrineInit();
     if (KDClassStart[KinkyDungeonClassMode])
-        KDClassStart[KinkyDungeonClassMode]();
+        KDClassStart[KinkyDungeonClassMode](true);
     KDGameData.Class = KinkyDungeonClassMode;
     KinkyDungeonSetMaxStats();
     KinkyDungeonStatDistraction = 0;
@@ -12058,14 +12079,14 @@ let KDLoadingDone = 1;
 let KDLoadingMax = 1;
 let KinkyDungeonKey = ['W', 'A', 'S', 'D', 'Q', 'E', 'Z', 'C'];
 let KinkyDungeonKeySpell = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-let KinkyDungeonKeySpellConfig = ['<', '@', '#'];
+let KinkyDungeonKeyTab = ["!", "@", "#", "$", "%",];
 let KinkyDungeonKeyWait = ['X'];
 let KinkyDungeonKeySkip = ['Space'];
 let KinkyDungeonKeyEnter = ['Enter'];
 let KinkyDungeonKeySprint = ['ShiftLeft'];
 let KinkyDungeonKeyWeapon = ['R',];
 let KinkyDungeonKeyUpcast = ['ControlLeft', 'AltLeft'];
-let KinkyDungeonKeyMenu = ['V', 'I', 'U', 'M', 'L', '*', '-', '_', "Home", "PageUp"];
+let KinkyDungeonKeyMenu = ['V', 'I', 'M', 'L', "Home"];
 let KinkyDungeonKeyToggle = ['O', 'P', 'B', 'Backspace', '=', "ShiftRight", 'T', '?', '/', "'", 'N', 'K'];
 let KinkyDungeonKeySpellPage = ['`'];
 let KinkyDungeonKeySwitchWeapon = ['F', 'G', 'H', 'J'];
@@ -12287,6 +12308,11 @@ let KDDefaultKB = {
     Spell8: KinkyDungeonKeySpell[7],
     Spell9: KinkyDungeonKeySpell[8],
     Spell0: KinkyDungeonKeySpell[9],
+    Tab1: KinkyDungeonKeyTab[0],
+    Tab2: KinkyDungeonKeyTab[1],
+    Tab3: KinkyDungeonKeyTab[2],
+    Tab4: KinkyDungeonKeyTab[3],
+    Tab5: KinkyDungeonKeyTab[4],
     Wait: KinkyDungeonKeyWait[0],
     WaitInterrupt: KinkyDungeonKeyToggle[6],
     ToggleBuff: KinkyDungeonKeyToggle[11],
@@ -12303,14 +12329,9 @@ let KDDefaultKB = {
     SpellPage: KinkyDungeonKeySpellPage[0],
     QInventory: KinkyDungeonKeyMenu[0],
     Inventory: KinkyDungeonKeyMenu[1],
-    Reputation: KinkyDungeonKeyMenu[2],
-    Magic: KinkyDungeonKeyMenu[3],
-    Log: KinkyDungeonKeyMenu[4],
-    Quest: KinkyDungeonKeyMenu[5],
-    Collection: KinkyDungeonKeyMenu[6],
-    Facilities: KinkyDungeonKeyMenu[7],
-    Restart: KinkyDungeonKeyMenu[8],
-    JourneyMap: KinkyDungeonKeyMenu[9],
+    Magic: KinkyDungeonKeyMenu[2],
+    Log: KinkyDungeonKeyMenu[3],
+    Restart: KinkyDungeonKeyMenu[4],
     SwitchWeapon: KinkyDungeonKeySwitchWeapon[0],
     SwitchWeaponOffhand: KinkyDungeonKeySwitchWeapon[1],
     SwitchWeaponOffhandPrevious: KinkyDungeonKeySwitchWeapon[2],
@@ -12318,9 +12339,6 @@ let KDDefaultKB = {
     SwitchLoadout1: KinkyDungeonKeySwitchLoadout[0],
     SwitchLoadout2: KinkyDungeonKeySwitchLoadout[1],
     SwitchLoadout3: KinkyDungeonKeySwitchLoadout[2],
-    SpellConfig1: KinkyDungeonKeySpellConfig[0],
-    SpellConfig2: KinkyDungeonKeySpellConfig[1],
-    SpellConfig3: KinkyDungeonKeySpellConfig[2],
     AStruggle: KinkyDungeonKeyToggle[3],
     APathfind: KinkyDungeonKeyToggle[4],
     AInspect: KinkyDungeonKeyToggle[5],
@@ -13028,7 +13046,11 @@ let KDErrorText = "";
 let KDErrorTextTime = 0;
 let KDErrorTextTime_DELAY = 2500;
 let KDCurrentHoverButton = null;
+let KDLastScrollableListUpdate = 0;
+let mouseHoldTaken = "";
 function KinkyDungeonRun() {
+    if (!mouseDown)
+        mouseHoldTaken = "";
     KDButtonHovering = false;
     KDCurrentHoverButton = null;
     if (KDSaveQueue.length > 8) {
@@ -13097,6 +13119,9 @@ function KinkyDungeonRun() {
     KDJourneyGraphics.clear();
     KDJourneyGraphicsLower.clear();
     KDJourneyGraphicsUpper.clear();
+    let scollablelistdelta = 0.001 * (CommonTime() - KDLastScrollableListUpdate);
+    KDLastScrollableListUpdate = CommonTime();
+    KDUpdateScrollableLists(scollablelistdelta);
     if (mouseDown && !LongHoldPinged && HoldMoved && HoldStartTime > 0 && CommonTime() > HoldStartTime + LongHoldThresh) {
         LongHoldPinged = true;
         KDAddShockwave(MouseX, MouseY, 256, "Particles/Shockwave.png", false);
@@ -14629,6 +14654,9 @@ function KinkyDungeonRun() {
         }
     }
     KDLastButtonsCache = {};
+    KDLastHoldButtonsCache = {};
+    if (mouseDown)
+        KDHandleMouseDown();
     if ((!KDDebugMode && KinkyDungeonDrawState == "Restart") || (KDDebugMode && (KinkyDungeonDrawState != "Restart" || KinkyDungeonState != "Game"))) {
         ElementRemove("DebugEnemy");
         ElementRemove("DebugItem");
@@ -14746,7 +14774,9 @@ function KDCullTexList(list) {
     }
 }
 let KDButtonsCache = {};
+let KDHoldButtonsCache = {};
 let KDLastButtonsCache = {};
+let KDLastHoldButtonsCache = {};
 function DrawButtonKD(name, enabled, Left, Top, Width, Height, Label, Color, Image, HoveringText, Disabled, NoBorder) {
     let params = {
         Left,
@@ -14765,6 +14795,28 @@ function DrawButtonKD(name, enabled, Left, Top, Width, Height, Label, Color, Ima
     }
     DrawButtonVis(Left, Top, Width, Height, Label, Color, Image, HoveringText, Disabled, NoBorder);
     KDButtonsCache[name] = params;
+}
+function DrawHoldButtonKDExTo(Container, name, func, enabled, Left, Top, Width, Height, Label, Color, Image, HoveringText, Disabled, NoBorder, FillColor, FontSize, ShiftText, options) {
+    let params = {
+        Left,
+        Top,
+        Width,
+        Height,
+        enabled,
+        func,
+        priority: (options?.zIndex || 0),
+        hotkeyPress: options?.hotkeyPress,
+    };
+    let hover = ((MouseX >= Left) && (MouseX <= Left + Width) && (MouseY >= Top) && (MouseY <= Top + Height) && !CommonIsMobile && !Disabled);
+    if (hover) {
+        if (!KDCurrentHoverButton)
+            KDCurrentHoverButton = params;
+        else
+            Disabled = true;
+    }
+    DrawButtonVisTo(Container, Left, Top, Width, Height, Label, Color, Image, HoveringText, Disabled, NoBorder, FillColor, FontSize, ShiftText, undefined, options?.zIndex, options);
+    KDHoldButtonsCache[name] = params;
+    return MouseIn(Left, Top, Width, Height);
 }
 function DrawButtonKDEx(name, func, enabled, Left, Top, Width, Height, Label, Color, Image, HoveringText, Disabled, NoBorder, FillColor, FontSize, ShiftText, options) {
     let params = {
@@ -14862,6 +14914,9 @@ function KDMouseWheel(event) {
             return;
     }
     else
+        return;
+    if (KDScrollScrollableLists(MouseX, MouseY, Math.sign(event.deltaY)
+        * Math.ceil(Math.abs(event.deltaY / 100))))
         return;
     if (KDFunctionCycleTabScroll(event.deltaY))
         return;
@@ -15128,6 +15183,13 @@ function KDProcessButtonScroll(amount, padV = 0) {
             }
         }
     }
+    for (let button of Object.entries(KDHoldButtonsCache)) {
+        if (button[1].enabled && button[1].scrollfunc) {
+            if (MouseInKD(button[0], 0, padV)) {
+                buttons.push(button[1]);
+            }
+        }
+    }
     if (buttons.length > 0) {
         buttons = buttons.sort((a, b) => { return b.priority - a.priority; });
         buttons[0].scrollfunc(amount);
@@ -15146,19 +15208,49 @@ function KDProcessButtons() {
     }
     if (buttons.length > 0) {
         buttons = buttons.sort((a, b) => { return b.priority - a.priority; });
-        return buttons[0].func();
+        return buttons[0].func({
+            source: "mouse"
+        });
     }
     return false;
 }
-function KDClickButton(name) {
+function KDProcessHoldButtons() {
+    let buttons = [];
+    for (let button of Object.entries(KDHoldButtonsCache)) {
+        if (button[1].enabled && button[1].func) {
+            if (MouseInKD(button[0])) {
+                buttons.push(button[1]);
+            }
+        }
+    }
+    if (buttons.length > 0) {
+        buttons = buttons.sort((a, b) => { return b.priority - a.priority; });
+        return buttons[0].func({
+            source: "mouse"
+        });
+    }
+    return false;
+}
+function KDClickButton(name, source = "hotkey", key = "") {
     let button = KDButtonsCache[name] || KDLastButtonsCache[name];
     if (button && button.enabled) {
-        return button.func(button);
+        return button.func({
+            source: source
+        });
+    }
+    return false;
+}
+function KDHoldButton(name, source = "hotkey", key = "") {
+    let button = KDHoldButtonsCache[name] || KDLastHoldButtonsCache[name];
+    if (button && button.enabled) {
+        return button.func({
+            source: source
+        });
     }
     return false;
 }
 function MouseInKD(name, padX = 0, padV = 0) {
-    let button = KDButtonsCache[name];
+    let button = KDButtonsCache[name] || KDHoldButtonsCache[name];
     if (button && button.enabled) {
         return MouseIn(button.Left - padX, button.Top - padV, button.Width + 2 * padX, button.Height + 2 * padV);
     }
@@ -15271,24 +15363,26 @@ function KDCommitKeybindings() {
     KinkyDungeonGameKey.KEY_DOWNLEFT = (KinkyDungeonKeybindings.DownLeft);
     KinkyDungeonGameKey.KEY_UPRIGHT = (KinkyDungeonKeybindings.UpRight);
     KinkyDungeonGameKey.KEY_DOWNRIGHT = (KinkyDungeonKeybindings.DownRight);
-    KinkyDungeonKeySpell = [
-        KinkyDungeonKeybindings.Spell1,
-        KinkyDungeonKeybindings.Spell2,
-        KinkyDungeonKeybindings.Spell3,
-        KinkyDungeonKeybindings.Spell4,
-        KinkyDungeonKeybindings.Spell5,
-        KinkyDungeonKeybindings.Spell6,
-        KinkyDungeonKeybindings.Spell7,
-        KinkyDungeonKeybindings.Spell8,
-        KinkyDungeonKeybindings.Spell9,
-        KinkyDungeonKeybindings.Spell0,
-    ];
+    KinkyDungeonKeyTab = [
+        KinkyDungeonKeybindings.Tab1,
+        KinkyDungeonKeybindings.Tab2,
+        KinkyDungeonKeybindings.Tab3,
+        KinkyDungeonKeybindings.Tab4,
+        KinkyDungeonKeybindings.Tab5,
+    ],
+        KinkyDungeonKeySpell = [
+            KinkyDungeonKeybindings.Spell1,
+            KinkyDungeonKeybindings.Spell2,
+            KinkyDungeonKeybindings.Spell3,
+            KinkyDungeonKeybindings.Spell4,
+            KinkyDungeonKeybindings.Spell5,
+            KinkyDungeonKeybindings.Spell6,
+            KinkyDungeonKeybindings.Spell7,
+            KinkyDungeonKeybindings.Spell8,
+            KinkyDungeonKeybindings.Spell9,
+            KinkyDungeonKeybindings.Spell0,
+        ];
     KinkyDungeonKeyUpcast = [KinkyDungeonKeybindings.Upcast, KinkyDungeonKeybindings.UpcastCancel];
-    KinkyDungeonKeySpellConfig = [
-        KinkyDungeonKeybindings.SpellConfig1,
-        KinkyDungeonKeybindings.SpellConfig2,
-        KinkyDungeonKeybindings.SpellConfig3,
-    ];
     KinkyDungeonKeyWait = [KinkyDungeonKeybindings.Wait];
     KinkyDungeonKeySkip = [KinkyDungeonKeybindings.Skip];
     KinkyDungeonKeyWeapon = [KinkyDungeonKeybindings.SpellWeapon];
@@ -16420,6 +16514,28 @@ function KDUpdateHardMode() {
 }
 let KDHardModeThresh = 10;
 let KDAwaitingModLoad = false;
+function KDHandleMouseDown() {
+    allowMusic = true;
+    if (KDAwaitingModLoad)
+        return true;
+    if (KDContextMenu && KDCurrentHoverButton?.contextMenu) {
+        if (!MouseIn(KDContextXX, KDContextYY, KDContextW, KDContextH)) {
+            return true;
+        }
+        KDProcessHoldButtons();
+        return true;
+    }
+    else if (KDContextMenu && KDDrawGameContextMenu[KinkyDungeonDrawState]) {
+        if (!MouseIn(KDContextXX, KDContextYY, KDContextW, KDContextH)) {
+            return true;
+        }
+        KDProcessHoldButtons();
+        return true;
+    }
+    if (KDProcessHoldButtons())
+        return true;
+    return false;
+}
 function KinkyDungeonHandleClick(event) {
     allowMusic = true;
     KDLastForceRefresh = CommonTime() - KDLastForceRefreshInterval - 10;
@@ -16769,7 +16885,7 @@ let HoldMoved = false;
 let HoldMoveThresh = 140;
 window.addEventListener('click', function (event) {
     MouseMove(event);
-    if (!CommonIsMobile || !MouseClicked) {
+    if ((!CommonIsMobile || !MouseClicked) && !mouseHoldTaken) {
         KDClick(event);
     }
     MouseClicked = true;
@@ -16848,7 +16964,9 @@ window.addEventListener('touchend', function (event) {
     }
     LastHoldTime = CommonTime() - HoldStartTime;
     if (mouseDown && !MouseClicked) {
-        KDClick(undefined);
+        if (!mouseHoldTaken) {
+            KDClick(undefined);
+        }
         MouseClicked = true;
     }
     else {
@@ -16882,7 +17000,7 @@ window.addEventListener('touchend', function (event) {
 });
 window.addEventListener('mouseup', function (event) {
     mouseDown = false;
-    if (!CommonIsMobile)
+    if (!CommonIsMobile && !mouseHoldTaken)
         MouseClicked = false;
     if (!HoldMoved) {
         if (PIXICanvas) {
@@ -17694,11 +17812,17 @@ function KDDrawGameSetupTabs(_xOffset = 0) {
     DrawButtonKDEx("TabDiff", (_b) => {
         KinkyDungeonState = "Diff";
         return true;
-    }, true, 500, 10, 740, 40, TextGet("KDDiffTab_Diff"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonState != "Diff", KDButtonColor);
+    }, true, 500, 10, 740, 40, TextGet("KDDiffTab_Diff"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonState != "Diff", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeySpell[0]),
+        hotkeyPress: KinkyDungeonKeySpell[0],
+    });
     DrawButtonKDEx("TabChallenge", (_b) => {
         KinkyDungeonState = "Challenge";
         return true;
-    }, true, 1250, 10, 740, 40, TextGet("KDDiffTab_Challenge"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonState != "Challenge", KDButtonColor);
+    }, true, 1250, 10, 740, 40, TextGet("KDDiffTab_Challenge"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonState != "Challenge", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeySpell[1]),
+        hotkeyPress: KinkyDungeonKeySpell[1],
+    });
     DrawButtonKDEx("backButton", (_b) => {
         KinkyDungeonState = "Menu";
         return true;
@@ -17912,7 +18036,7 @@ function KinkyDungeonCreateMap(MapParams, RoomType, MapMod, Floor, testPlacement
     KDUpdatePreferenceFlags();
     KDResetDialogue();
     KDTileModes = {};
-    KDUpdateOptionGame();
+    KDUpdateOptionGame(false);
     KDBreakTether(KDPlayer());
     KinkyDungeonRemoveBuffsWithTag(KinkyDungeonPlayerEntity, ["removeNewMap"]);
     let allies = KinkyDungeonGetAllies();
@@ -20801,7 +20925,7 @@ function KDInitTempValues(seed) {
     KDPathCache = new Map();
     KDPathCacheIgnoreLocks = new Map();
 }
-function KDUpdateOptionGame() {
+function KDUpdateOptionGame(start) {
     if (KinkyDungeonStatsChoice.get("NoForceGreet") && !KDGameData.NoForceGreet) {
         KDGameData.NoForceGreet = true;
     }
@@ -20811,7 +20935,7 @@ function KDUpdateOptionGame() {
     for (let kurasu of Object.keys(KDClassStart)) {
         let perkname = "MC_" + (KDClassSynonyms[kurasu] || kurasu);
         if (!!KinkyDungeonStatsChoice.get(perkname) && KDPerkStart[perkname]) {
-            KDPerkStart[perkname]();
+            KDPerkStart[perkname](start);
         }
     }
 }
@@ -21806,7 +21930,7 @@ function KinkyDungeonGameKeyDown() {
         return true;
     for (let b of Object.entries(KDButtonsCache)) {
         if (b[1].hotkeyPress == KinkyDungeonKeybindingCurrentKey) {
-            if (KDClickButton(b[0])) {
+            if (KDClickButton(b[0], "hotkey", KinkyDungeonKeybindingCurrentKey)) {
                 return true;
             }
         }
@@ -21865,9 +21989,9 @@ function KinkyDungeonGameKeyDown() {
         }
         return true;
     }
-    else if (KinkyDungeonKeySpellConfig.includes(KinkyDungeonKeybindingCurrentKey)) {
+    else if (KinkyDungeonKeyTab.includes(KinkyDungeonKeybindingCurrentKey)) {
         if (KinkyDungeonState == "Game") {
-            let index = 1 + KinkyDungeonKeySpellConfig.indexOf(KinkyDungeonKeybindingCurrentKey);
+            let index = 1 + KinkyDungeonKeyTab.indexOf(KinkyDungeonKeybindingCurrentKey);
             if (localStorage.getItem('KinkyDungeonSpellsChoice' + String(index))) {
                 KinkyDungeonSpellsConfig = String(index);
                 KinkyDungeonLoadSpellsConfig();
@@ -22025,29 +22149,12 @@ function KinkyDungeonGameKeyDown() {
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "Inventory" ? "Game" : "Inventory";
                     break;
                 case KinkyDungeonKeyMenu[2]:
-                    KinkyDungeonDrawState = KinkyDungeonDrawState == "Reputation" ? "Game" : "Reputation";
-                    break;
-                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "MagicSpells" ? "Game" : "MagicSpells";
                     break;
-                case KinkyDungeonKeyMenu[4]:
+                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "Logbook" ? "Game" : "Logbook";
                     break;
-                case KinkyDungeonKeyMenu[5]:
-                    KinkyDungeonDrawState = KinkyDungeonDrawState == "Quest" ? "Game" : "Quest";
-                    break;
-                case KinkyDungeonKeyMenu[6]:
-                    KinkyDungeonDrawState = (KinkyDungeonDrawState == "Collection" || KinkyDungeonDrawState == "Bondage") ? "Game" : "Collection";
-                    break;
-                case KinkyDungeonKeyMenu[7]:
-                    KinkyDungeonDrawState = KinkyDungeonDrawState == "Facilities" ? "Game" : "Facilities";
-                    break;
-                case KinkyDungeonKeyMenu[9]: {
-                    KinkyDungeonDrawState = KinkyDungeonDrawState == "JourneyMap" ? "Game" : "JourneyMap";
-                    KDGameData.UseJourneyTarget = false;
-                    break;
-                }
-                case KinkyDungeonKeyMenu[8]: {
+                case KinkyDungeonKeyMenu[4]: {
                     KinkyDungeonDrawState = "Restart";
                     KDConfirmDeleteSave = false;
                     if (KDDebugMode) {
@@ -22084,31 +22191,13 @@ function KinkyDungeonGameKeyDown() {
                     KDShowInventory(null);
                     break;
                 case KinkyDungeonKeyMenu[2]:
-                    KinkyDungeonDrawState = "Reputation";
-                    break;
-                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = "MagicSpells";
                     break;
-                case KinkyDungeonKeyMenu[4]:
+                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = "Logbook";
                     break;
-                case KinkyDungeonKeyMenu[5]:
-                    KinkyDungeonDrawState = "Quest";
-                    KDSortQuests(KDPlayer());
-                    break;
-                case KinkyDungeonKeyMenu[6]:
-                    KinkyDungeonDrawState = "Collection";
-                    break;
-                case KinkyDungeonKeyMenu[7]:
-                    KinkyDungeonDrawState = "Facilities";
-                    break;
-                case KinkyDungeonKeyMenu[9]: {
-                    KinkyDungeonDrawState = "JourneyMap";
-                    KDGameData.UseJourneyTarget = false;
-                    break;
-                }
                 case KinkyDungeonKeySkip[0]:
-                case KinkyDungeonKeyMenu[8]:
+                case KinkyDungeonKeyMenu[4]:
                     KinkyDungeonDrawState = "Game";
                     break;
             }
@@ -22167,12 +22256,9 @@ function KinkyDungeonGameKeyUp(lastPress) {
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "Inventory" ? "Game" : "Inventory";
                     break;
                 case KinkyDungeonKeyMenu[2]:
-                    KinkyDungeonDrawState = KinkyDungeonDrawState == "Reputation" ? "Game" : "Reputation";
-                    break;
-                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "MagicSpells" ? "Game" : "MagicSpells";
                     break;
-                case KinkyDungeonKeyMenu[4]:
+                case KinkyDungeonKeyMenu[3]:
                     KinkyDungeonDrawState = KinkyDungeonDrawState == "Logbook" ? "Game" : "Logbook";
                     break;
             }
@@ -25440,6 +25526,14 @@ let KinkyDungeonCreateMapGenType = {
     },
     "PerkRoom": (POI, VisitedRooms, width, height, openness, density, hallopenness, data) => {
         KinkyDungeonCreatePerkRoom(POI, VisitedRooms, width, height, openness, density, hallopenness, data);
+        if (KDGameData.RoomType == "PerkRoom" && MiniGameKinkyDungeonLevel >= 1) {
+            if ((!KinkyDungeonStatsChoice.get("saveMode"))) {
+                let saveData = LZString.compressToBase64(JSON.stringify(KinkyDungeonSaveGame(true)));
+                KinkyDungeonState = "Save";
+                KDTextArea("saveDataField", 750, 100, 1000, 230);
+                ElementValue("saveDataField", saveData);
+            }
+        }
     },
     "Chamber": (POI, VisitedRooms, width, height, _openness, _density, _hallopenness, data) => {
         KinkyDungeonCreateMaze(POI, VisitedRooms, width, height, 2, 1.5, 8, data);
@@ -44218,22 +44312,28 @@ function KDAddEntity(entity, makepersistent, dontteleportpersistent, noLoadout, 
         KDUpdateEnemyCache = true;
         KDGetEnemyCache();
     }
-    if (!dontteleportpersistent && KDIsNPCPersistent(data.enemy.id) && KinkyDungeonFindID(data.enemy.id, mapData)) {
+    if (!dontteleportpersistent && KDIsNPCPersistent(data.enemy.id)) {
         let npc = KinkyDungeonFindID(data.enemy.id, mapData);
-        KDUnPackEnemy(data.enemy);
-        npc.x = data.x;
-        npc.y = data.y;
-        npc.visual_x = npc.x;
-        npc.visual_y = npc.y;
-        if (KDIsNPCPersistent(data.enemy.id) && !KDGetAltType(MiniGameKinkyDungeonLevel)?.keepPrisoners)
-            KDGetPersistentNPC(data.enemy.id).collect = false;
-        if (KDIsNPCPersistent(data.enemy.id))
-            KDGetPersistentNPC(data.enemy.id).spawned = true;
-        if (data.enemy.hp <= 0.5)
-            data.enemy.hp = 0.51;
-        if (mapData == KDMapData)
-            KDUpdateEnemyCache = true;
-        return npc;
+        if (npc) {
+            KDUnPackEnemy(data.enemy);
+            npc.x = data.x;
+            npc.y = data.y;
+            npc.visual_x = npc.x;
+            npc.visual_y = npc.y;
+            if (KDIsNPCPersistent(data.enemy.id) && !KDGetAltType(MiniGameKinkyDungeonLevel)?.keepPrisoners)
+                KDGetPersistentNPC(data.enemy.id).collect = false;
+            if (KDIsNPCPersistent(data.enemy.id)) {
+                KDGetPersistentNPC(data.enemy.id).spawned = true;
+            }
+            if (data.enemy.hp <= 0.5)
+                data.enemy.hp = 0.51;
+            if (mapData == KDMapData)
+                KDUpdateEnemyCache = true;
+            return npc;
+        }
+        else if (!dontteleportpersistent && KDDeletedIDs[data.enemy.id]) {
+            return null;
+        }
     }
     else if (!dontteleportpersistent && KDDeletedIDs[data.enemy.id]) {
         return null;
@@ -44252,8 +44352,9 @@ function KDAddEntity(entity, makepersistent, dontteleportpersistent, noLoadout, 
             npc.entity.x = data.x;
             npc.entity.y = data.y;
             KDUpdateEnemyCache = true;
-            if (KDIsNPCPersistent(data.enemy.id))
+            if (KDIsNPCPersistent(data.enemy.id)) {
                 KDGetPersistentNPC(data.enemy.id).spawned = true;
+            }
         }
         else {
             createpersistent = true;
@@ -44360,7 +44461,9 @@ function KDDespawnEnemy(enemy, E, mapData, moveThruExit, moveToX, moveToY) {
         if (failPlaceThru) {
             if (enemy)
                 KDClearStolenItems(enemy);
-            DisposeEntity(id);
+            if (!KDIsNPCPersistent(id))
+                DisposeEntity(id);
+            return false;
         }
     }
     return true;
@@ -44420,7 +44523,6 @@ function KDRemoveEntity(enemy, kill, capture, noEvent, forceIndex, mapData) {
         }
     }
     if (KDIsNPCPersistent(enemy.id) && KDGetPersistentNPC(enemy.id)) {
-        KDGetPersistentNPC(enemy.id).jailed = undefined;
         KDGetPersistentNPC(enemy.id).spawned = undefined;
     }
     KDSpliceIndex(forceIndex || data.mapData.Entities.indexOf(data.enemy), 1, data.mapData);
@@ -45081,6 +45183,13 @@ function KDResetMoveFlags(enemy) {
     KinkyDungeonSetEnemyFlag(enemy, "blocked", 0);
     KinkyDungeonSetEnemyFlag(enemy, "failpath", 0);
     KinkyDungeonSetEnemyFlag(enemy, "genpath", 0);
+}
+function KDGetCoordFromMapData(mapData) {
+    return {
+        mapX: mapData.mapX,
+        room: mapData.RoomType,
+        mapY: mapData.mapY,
+    };
 }
 let KDJailPersonalities = {
     "Robot": true,
@@ -62744,7 +62853,7 @@ function KDDrawNavBar(skip, _quit = false) {
         KinkyDungeonDressPlayer();
         return true;
     }, true, bx, by, bwidth, bheight, TextGet((skip == bindex) ? "KDNavGame" : "KDNavQuit"), KDBaseWhite, KinkyDungeonRootDirectory + ((skip == bindex) ? "UI/button_game.png" : "UI/button_menu.png"), undefined, undefined, false, "", 24, true, {
-        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[8]),
+        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[4]),
     });
     bindex++;
     bInc();
@@ -62772,7 +62881,7 @@ function KDDrawNavBar(skip, _quit = false) {
         KinkyDungeonDressPlayer();
         return true;
     }, true, bx, by, bwidth, bheight, TextGet((skip == bindex) ? "KDNavGame" : "KinkyDungeonMagic"), KDBaseWhite, KinkyDungeonRootDirectory + ((skip == bindex) ? "UI/button_game.png" : "UI/button_spells.png"), undefined, undefined, false, "", 24, true, {
-        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[3]),
+        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[2]),
     });
     bindex++;
     bInc();
@@ -62792,7 +62901,7 @@ function KDDrawNavBar(skip, _quit = false) {
         KinkyDungeonDressPlayer();
         return true;
     }, true, bx, by, bwidth, bheight, logtxt, KDBaseWhite, KinkyDungeonRootDirectory + ((skip == bindex) ? "UI/button_game.png" : "UI/button_logbook.png"), undefined, undefined, false, "", 24, true, {
-        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[4]),
+        hotkey: KDHotkeyToText(KinkyDungeonKeyMenu[3]),
     });
     bindex++;
     bInc();
@@ -65691,6 +65800,13 @@ function KinkyDungeonDrawGame() {
             }
             KinkyDungeonDrawFacilities();
         }
+        else if (KinkyDungeonDrawState == "Progress") {
+            KDDrawNavBar(1);
+            if (KDGameData.PlayerName) {
+                DrawTextFitKD(KDGameData.PlayerName, 250, 25, 480, KDBaseWhite, KDTextGray0, 32, "center", 20);
+            }
+            KinkyDungeonDrawProgress();
+        }
         else if (KinkyDungeonDrawState == "Container" && KDUI_CurrentContainer) {
             KDDrawNavBar(1);
             if (KDGameData.PlayerName) {
@@ -66848,7 +66964,7 @@ function DrawButtonVisTo(Container, Left, Top, Width, Height, Label, Color, Imag
     if (!NoBorder || FillColor)
         DrawBoxKDTo(Container, Left, Top, Width, Height, FillColor ? FillColor : (hover ? (KDTextGray2) : KDButtonColor), NoBorder, options?.alpha || 0.5, zIndex);
     if (hover) {
-        let pad = 4;
+        let pad = 2;
         DrawRectKD(Container || kdcanvas, kdpixisprites, Left + "," + Top + Image + "w" + Width + "h" + Height + "out", {
             Left: Left + pad,
             Top: Top + pad,
@@ -68430,6 +68546,335 @@ function KDSpellValid(x, y, spellRange, projAimOverride) {
     if (KinkyDungeonTargetingSpell.minRange && KDistEuclidean(x - KinkyDungeonPlayerEntity.x, y - KinkyDungeonPlayerEntity.y) < KinkyDungeonTargetingSpell.minRange)
         Valid = false;
     return Valid;
+}
+let KDCurrentProgressMainSelection = "";
+function KinkyDungeonDrawProgress(xOffset = -125) {
+    let x = 1225 + xOffset;
+    KDDrawProgressList(xOffset);
+    KDDrawInventoryTabs(xOffset);
+}
+function KDEnumerateTrainingProgress(data) {
+}
+function KDEnumerateMainProgress(data) {
+}
+function KDEnumerateProgressItems(sort = true) {
+    let data = {
+        list: [],
+        trainings: [],
+    };
+    KDEnumerateTrainingProgress(data);
+    KinkyDungeonSendEvent("enumerateProgressBefore", data);
+    KDEnumerateMainProgress(data);
+    KinkyDungeonSendEvent("enumerateProgressAfter", data);
+    data.list.push(...data.trainings);
+    if (sort) {
+        data.list = data.list.sort((a, b) => {
+            return b.priority - a.priority;
+        });
+    }
+    return data.list;
+}
+function KDDrawProgressList(xOffset) {
+    let MainList = "MainProgress_List";
+    let horizontal = false;
+    let x = 650;
+    let h = PIXIHeight - 200;
+    let spacing = 80;
+    if (ShouldUpdateList(MainList)) {
+        let list = KDEnumerateProgressItems();
+        PopulateList(MainList, x + xOffset, 120, horizontal ? h : 300, horizontal ? 300 : h, 50, Math.round(h / spacing), list, false);
+    }
+    let hotkeyUp = KinkyDungeonKey[0];
+    let hotkeyDown = KinkyDungeonKey[2];
+    let drawn = KDDrawScrollableList(MainList, true, (container, isClickable, item, index, visualIndex, isSelected, selectedIndex, list) => {
+        let it = item;
+        let w = list.w - 40;
+        DrawTextFitKDTo(container, TextGet("KDProgressItem_" + item.name, item.data), list.x + 20 + w * 0.5 + (horizontal ? visualIndex * 80 : 0), list.y + 20 + (horizontal ? 0 : visualIndex * 80), w - 80, item.textColor);
+        if (item.level != undefined)
+            DrawTextFitKDTo(container, "" + item.level, list.x + 32 + (horizontal ? visualIndex * 80 : 0), list.y + 38 + (horizontal ? 0 : visualIndex * 80), w - 10, item.textColor, undefined, 48, "center", 100.5, 0.4);
+        DrawRectKD(container, kdpixisprites, "MainProgressSelect" + item.name + "pbborder", {
+            Color: item.bordercolor,
+            Left: list.x + 60 + (horizontal ? visualIndex * 80 : 0),
+            Height: 12,
+            Top: list.y + 50 + (horizontal ? 0 : visualIndex * 80),
+            Width: w - 70,
+            zIndex: 102,
+            alpha: 0.9,
+            LineWidth: 1
+        });
+        FillRectKD(container, kdpixisprites, "MainProgressSelect" + item.name + "pbfill", {
+            Color: item.color,
+            Left: list.x + 60 + (horizontal ? visualIndex * 80 : 0),
+            Height: 11,
+            Top: list.y + 50 + (horizontal ? 0 : visualIndex * 80),
+            Width: (w - 70) * item.progress,
+            zIndex: 101,
+            alpha: 0.9,
+            LineWidth: 1
+        });
+        DrawButtonKDExTo(container, "MainProgressSelect" + item.name, (bdata) => {
+            KDCurrentProgressMainSelection = it.name;
+            if (bdata?.source == "hotkey") {
+                setTimeout(() => {
+                    KDFixScrollableList(MainList);
+                }, 100);
+            }
+            return true;
+        }, isClickable, list.x + 10 + (horizontal ? visualIndex * 80 : 0), list.y + (horizontal ? 0 : visualIndex * 80), w - 10, 72, "", item.textColor, "", undefined, undefined, KDCurrentProgressMainSelection != item.name, KDButtonColor, undefined, undefined, {
+            hotkey: selectedIndex == index - 1 ? KDHotkeyToText(hotkeyDown)
+                : (selectedIndex == index + 1 ? KDHotkeyToText(hotkeyUp)
+                    : null),
+            hotkeyPress: selectedIndex == index - 1 ? hotkeyDown
+                : (selectedIndex == index + 1 ? hotkeyUp
+                    : null),
+        });
+        return KDCurrentProgressMainSelection == item.name;
+    }, undefined, horizontal, undefined, undefined, hotkeyUp, hotkeyDown);
+    if (drawn) {
+    }
+}
+let KDScrollableListDataset = {};
+let KDScrollableListExp = 4;
+let KDScrollableListMin = 4;
+let KDScrollBarSpacingW = 0.63;
+let KDScrollBarW = 0.3;
+function ShouldUpdateList(name, reset = true) {
+    if (KDScrollableListDataset[name]) {
+        if (CommonTime() - KDScrollableListDataset[name].lastUpdated > KDScrollableListDataset[name].updateInterval) {
+            if (reset)
+                KDScrollableListDataset[name].lastUpdated = 0;
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+function ForceUpdateList(name) {
+    if (KDScrollableListDataset[name]) {
+        KDScrollableListDataset[name].lastUpdated = 0;
+    }
+}
+function PopulateList(name, x, y, w, h, z, num_per_page, list, allowWrap) {
+    if (!KDScrollableListDataset[name]) {
+        KDScrollableListDataset[name] = {
+            allowWrap: allowWrap,
+            x: x,
+            y: y,
+            w: w,
+            h: h,
+            click_hold_y: 0,
+            click_hold_y_index: 0,
+            index: 0,
+            selectedindex: 0,
+            visual_index: 0,
+            items: [],
+            lastUpdated: 0,
+            updateInterval: 500,
+            zIndex: z,
+            max: list.length - 1,
+            min: 0,
+            num_per_page: num_per_page
+        };
+    }
+    KDScrollableListDataset[name].items = list;
+    KDScrollableListDataset[name].lastUpdated = CommonTime();
+    return KDScrollableListDataset[name];
+}
+function KDFixScrollableList(name, pad = 3) {
+    if (KDScrollableListDataset[name]) {
+        let list = KDScrollableListDataset[name];
+        let origIndex = list.index;
+        if (list.num_per_page > pad)
+            pad = Math.max(0, Math.ceil(list.num_per_page * 0.4 - 1));
+        if (list.selectedindex < pad + list.index && list.index > list.min) {
+            list.index = Math.max(list.min, Math.min(list.max, list.selectedindex - pad));
+        }
+        else if (list.selectedindex > list.num_per_page - pad - 1 + list.index && list.index < list.max) {
+            list.index = Math.min(list.max, Math.max(list.min, list.selectedindex - (list.num_per_page - pad - 1)));
+        }
+        return list.index != origIndex;
+    }
+    return false;
+}
+function KDScrollScrollableLists(mouseX, mouseY, scrollAmount) {
+    let highestZ = -1000000;
+    let highest = "";
+    for (let name in KDScrollableListDataset) {
+        let list = KDScrollableListDataset[name];
+        if (list) {
+            if (list.zIndex > highestZ) {
+                if (PointIn(mouseX, mouseY, list.x, list.y, list.w, list.h)) {
+                    highestZ = list.zIndex;
+                    highest = name;
+                }
+            }
+        }
+    }
+    if (highest) {
+        let list = KDScrollableListDataset[highest];
+        if (list) {
+            return KDScrollScrollableList(highest, scrollAmount);
+        }
+    }
+    return false;
+}
+function KDScrollScrollableList(name, amount) {
+    let list = KDScrollableListDataset[name];
+    if (!list)
+        return false;
+    let origIndex = list.index;
+    if (list.allowWrap && list.index == list.max) {
+        list.index = list.min;
+    }
+    else if (list.allowWrap && list.index == list.min) {
+        list.index = list.max;
+    }
+    else {
+        list.index = Math.max(Math.min(list.index + amount, list.max - Math.max(0, (list.num_per_page - 3))), list.min);
+    }
+    return list.index != origIndex;
+}
+function KDUpdateScrollableLists(delta) {
+    let speed = 1;
+    for (let name in KDScrollableListDataset) {
+        let list = KDScrollableListDataset[name];
+        if (list) {
+            if (list.visual_index != list.index) {
+                speed = delta * Math.max(KDScrollableListMin, KDScrollableListExp * Math.abs(list.visual_index - list.index));
+                if (Math.abs(list.visual_index - list.index) < speed) {
+                    list.visual_index = list.index;
+                }
+                else {
+                    list.visual_index += Math.sign(list.index - list.visual_index) * speed;
+                }
+            }
+        }
+    }
+}
+let KDPIXIScrollableListContainers = {};
+function KDDrawScrollableList(name, useContainer, drawCallback, drawBG = true, horizontal = false, scrollbarSize = 36, scrollSuff = "Small", scrollhotkeyUp = "", scrollhotkeyDown = "") {
+    let list = KDScrollableListDataset[name];
+    let container = kdcanvas;
+    if (useContainer != undefined) {
+        if (!KDPIXIScrollableListContainers[name]) {
+            KDPIXIScrollableListContainers[name] = new PIXI.Container();
+            container = KDPIXIScrollableListContainers[name];
+            container.zIndex = list.zIndex;
+            container.sortableChildren = true;
+            kdcanvas.addChild(container);
+            let mask = new PIXI.Graphics();
+            mask.beginFill(0xffffff);
+            mask.drawRect(list.x, list.y, list.w, list.h);
+            mask.endFill();
+            container.mask = mask;
+            container.addChild(mask);
+        }
+        else
+            container = KDPIXIScrollableListContainers[name];
+    }
+    if (drawBG) {
+        DrawRectKD(container, kdpixisprites, name + "borderbg", {
+            Left: list.x,
+            Top: list.y,
+            Width: list.w,
+            Height: list.h,
+            Color: KDBaseBlack,
+            alpha: KDUIAlpha,
+            LineWidth: 2,
+            zIndex: -1,
+        });
+        FillRectKD(container, kdpixisprites, name + "border", {
+            Left: list.x,
+            Top: list.y,
+            Width: list.w,
+            Height: list.h,
+            Color: KDBaseBlack,
+            alpha: KDUIAlphaHighlight,
+            LineWidth: 2,
+            zIndex: -0.9,
+        });
+    }
+    if (scrollbarSize > 0 && list.items.length > 0) {
+        let spacing = horizontal ? (list.w - scrollbarSize * 2) / list.num_per_page : ((list.h - scrollbarSize * 2) / list.num_per_page);
+        FillRectKD(container, kdpixisprites, name + "scrollb", {
+            Left: list.x + (horizontal ? scrollbarSize + spacing * list.visual_index : list.w - scrollbarSize * KDScrollBarSpacingW),
+            Top: list.y + (horizontal ? list.h - scrollbarSize * KDScrollBarSpacingW : scrollbarSize + spacing * list.visual_index) + 3,
+            Width: (!horizontal) ? scrollbarSize * KDScrollBarW - 1 : (Math.max(1, Math.min((list.w - scrollbarSize * 2) - spacing * list.visual_index, (list.w - scrollbarSize * 2) * (list.num_per_page - 1) / list.items.length) - 7)),
+            Height: horizontal ? scrollbarSize * KDScrollBarW - 1 : (Math.max(1, Math.min((list.h - scrollbarSize * 2) - spacing * list.visual_index, (list.h - scrollbarSize * 2) * (list.num_per_page - 1) / list.items.length) - 7)),
+            Color: KDBorderColor,
+            alpha: 0.9,
+            LineWidth: 2,
+            zIndex: -0.9,
+        });
+        DrawHoldButtonKDExTo(container, name + "scrollbtn", (_b) => {
+            if (!mouseHoldTaken || mouseHoldTaken == name + "_scroll") {
+                mouseHoldTaken = name + "_scroll";
+                return true;
+            }
+            return false;
+        }, true, list.x + (horizontal ? scrollbarSize : list.w - scrollbarSize), list.y + (horizontal ? list.h - scrollbarSize : scrollbarSize) + 3, horizontal ? (list.w - scrollbarSize * 2) : scrollbarSize, horizontal ? scrollbarSize : (list.h - scrollbarSize * 2), "", KDBaseWhite, "", undefined, true, true);
+        DrawButtonKDEx(name + "upbtn", (_b) => {
+            KDScrollScrollableList(name, -1);
+            return true;
+        }, true, list.x + (horizontal ? 0 : list.w - scrollbarSize), list.y + (horizontal ? list.h - scrollbarSize : 0), scrollbarSize, scrollbarSize, "", KDBaseWhite, KinkyDungeonRootDirectory + (horizontal ? "Left" : "Up") + scrollSuff + ".png", undefined, undefined, true, undefined, undefined, undefined, {
+            centered: true,
+        });
+        DrawButtonKDEx(name + "downbtn", (_b) => {
+            KDScrollScrollableList(name, 1);
+            return true;
+        }, true, list.x + list.w - scrollbarSize, list.y + list.h - scrollbarSize, scrollbarSize, scrollbarSize, "", KDBaseWhite, KinkyDungeonRootDirectory + (horizontal ? "Right" : "Down") + scrollSuff + ".png", undefined, undefined, true, undefined, undefined, undefined, {
+            centered: true,
+        });
+    }
+    if (list.items.length > 0 && (mouseHoldTaken == name + "_scroll")) {
+        let mouseDelta = horizontal ? (MouseX - (scrollbarSize + list.x)) : (MouseY - (scrollbarSize + list.y));
+        mouseDelta /= horizontal ? list.w : list.h;
+        mouseDelta = Math.max(0, Math.min(mouseDelta, 1));
+        list.index = Math.max(Math.min(Math.round(list.items.length * mouseDelta - list.num_per_page / 2), list.max - Math.max(0, (list.num_per_page - 3))), list.min);
+    }
+    else if (list.items.length > 0 && (!mouseHoldTaken || mouseHoldTaken == name + "_drag")) {
+        let spacing = horizontal ? (list.w - scrollbarSize * 2) / list.num_per_page : ((list.h - scrollbarSize * 2) / list.num_per_page);
+        if (mouseDown && !list.click_hold_y) {
+            if (MouseIn(list.x, list.y, list.w - scrollbarSize, list.h)) {
+                list.click_hold_y = (horizontal ? MouseX : MouseY);
+                list.click_hold_y_index = list.index;
+            }
+        }
+        else if (!mouseDown) {
+            list.click_hold_y = 0;
+        }
+        else {
+            if (Math.abs(list.click_hold_y - (horizontal ? MouseX : MouseY)) > 50) {
+                MouseClicked = true;
+                mouseHoldTaken = name + "_drag";
+            }
+            list.index = Math.min(list.max - Math.max(0, (list.num_per_page - 3)), Math.max(list.min, Math.round(list.click_hold_y_index + (list.click_hold_y - (horizontal ? MouseX : MouseY)) / spacing)));
+            list.visual_index = Math.min(list.max, Math.max(list.min - Math.max(0, (list.num_per_page - 3)), list.click_hold_y_index + (list.click_hold_y - (horizontal ? MouseX : MouseY)) / spacing));
+        }
+    }
+    let lastSelectedIndex = list.selectedindex;
+    list.selectedindex = -1;
+    let selected = null;
+    if (list) {
+        let diff = Math.round(list.index - list.visual_index);
+        let diffReal = (list.index - list.visual_index);
+        for (let i = -1 - diff; i <= list.num_per_page - diff; i++) {
+            if (list.items[i + list.index]) {
+                if (drawCallback(container, i >= 0 && i <= list.num_per_page, list.items[i + list.index], i + list.index, i + diffReal, list.selectedindex == i + list.index, lastSelectedIndex, list)) {
+                    list.selectedindex = i + list.index;
+                    selected = list.items[i + list.index];
+                }
+            }
+        }
+    }
+    if (scrollhotkeyUp && scrollhotkeyDown) {
+        if (KinkyDungeonKeybindingCurrentKey == scrollhotkeyUp
+            || KinkyDungeonKeybindingCurrentKey == scrollhotkeyDown) {
+            if (KDFixScrollableList(name, 3)) {
+            }
+        }
+    }
+    return selected;
 }
 let KDContextMenu = false;
 let KDContextX = 0;
@@ -73031,12 +73476,14 @@ let KDInputTypes = {
         return "";
     },
     "inventoryAction": (data) => {
-        if (KDInventoryAction[data.action || KDGameData.InventoryAction] && KDInventoryAction[data.action || KDGameData.InventoryAction].valid(data.player, data.item)) {
+        if (KDInventoryAction[data.action || KDGameData.InventoryAction]
+            && KDInventoryAction[data.action || KDGameData.InventoryAction].valid(data.player, data.item)) {
             if (data.item.type == Restraint)
                 data.item = KinkyDungeonInventoryGetWorn(data.item.name);
             else
                 data.item = KinkyDungeonInventoryGetSafe(data.item.name, KDInventoryActionContainer(data.player));
-            KDInventoryAction[data.action || KDGameData.InventoryAction].click(data.player, data.item);
+            if (data.item)
+                KDInventoryAction[data.action || KDGameData.InventoryAction].click(data.player, data.item);
         }
         return "";
     },
@@ -75051,7 +75498,7 @@ function KinkyDungeonHandleSpellCast(spell) {
         KinkyDungeonTargetingSpell = null;
         KinkyDungeonTargetingSpellItem = null;
         KinkyDungeonTargetingSpellWeapon = null;
-        KinkyDungeonSendActionMessage(7, TextGet("KinkyDungeonComponentsFail" + KinkyDungeoCheckComponents(spell)?.components[0]), KDBaseRed, 1);
+        KinkyDungeonSendActionMessage(7, TextGet("KinkyDungeonComponentsFail" + (cp.failed[0] || cp.components[0])), KDBaseRed, 1);
     }
     return null;
 }
@@ -90464,6 +90911,8 @@ function KDGetPersistentNPC(id, entity, force = true, location, special) {
     if (!KDPersistentNPCs[id] && force) {
         let enemy = entity || KinkyDungeonFindID(id);
         if (enemy) {
+            if (KDDeletedIDs[id + ""])
+                delete KDDeletedIDs[id + ""];
             if (enemy.partyLeader) {
                 if (KDPopEnemyPartyMember(enemy.id, enemy.partyLeader)) {
                     addToParty = enemy.partyLeader;
@@ -90526,7 +90975,55 @@ function KDCompareLocation(loc1, loc2) {
         return false;
     return true;
 }
+function KDCheckBrokenDespawned() {
+    let start = performance.now();
+    let found = {};
+    let unpersistent = {};
+    for (let slot in KDWorldMap) {
+        if (KDWorldMap[slot].data) {
+            for (let data in KDWorldMap[slot].data) {
+                let md = KDWorldMap[slot].data[data];
+                let altType = KDGetAltType(md.mapY, md.MapMod, md.RoomType);
+                if (!altType || !altType.alwaysRegen || altType.persist) {
+                    if (md.Entities) {
+                        for (let entity of KDWorldMap[slot].data[data].Entities) {
+                            found[entity.id] = true;
+                        }
+                    }
+                }
+                else if (!KDCompareLocation(KDGetCoordFromMapData(md), KDGetCurrentLocation())) {
+                    if (md.Entities) {
+                        for (let entity of KDWorldMap[slot].data[data].Entities) {
+                            unpersistent[entity.id] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let count = 0;
+    for (let npc in KDPersistentNPCs) {
+        if (KDPersistentNPCs[npc].spawned && !found[KDPersistentNPCs[npc].id]) {
+            if (KDIsImprisoned((KDPersistentNPCs[npc].entity)) && KDCapturable(KDPersistentNPCs[npc].entity)) {
+                KDPersistentNPCs[npc].spawned = false;
+                KDPersistentNPCs[npc].captured = true;
+                if (!unpersistent[KDPersistentNPCs[npc].id])
+                    KDPersistentNPCs[npc].jailed = true;
+                else
+                    KDPersistentNPCs[npc].jailed = undefined;
+            }
+            else {
+                KDPersistentNPCs[npc].spawned = false;
+                KDFreeNPC(KDPersistentNPCs[npc].entity, false);
+                KDPersistentNPCs[npc].jailed = undefined;
+            }
+            count++;
+        }
+    }
+    console.log("Took " + (performance.now() - start) + " ms to fix " + count + " npcs");
+}
 function KDRepopulatePersistentNPCs() {
+    KDCheckBrokenDespawned();
     let jp = KDMapData.JailPoints.filter((p) => {
         if (p.requireLeash)
             return false;
@@ -97110,24 +97607,36 @@ function KDDrawLoreRepTabs(xOffset = -125) {
     DrawButtonKDExScroll("TabLore", scrollFunc, (_b) => {
         KinkyDungeonDrawState = "Logbook";
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonLog"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Logbook", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonLog"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Logbook", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
     DrawButtonKDExScroll("TabRep", scrollFunc, (_b) => {
         KinkyDungeonDrawState = "Reputation";
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonReputation"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Reputation", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonReputation"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Reputation", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
     DrawButtonKDExScroll("TabQuest", scrollFunc, (_b) => {
         KinkyDungeonDrawState = "Quest";
         KDSortQuests(KDPlayer());
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonQuest"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Quest", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonQuest"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Quest", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
     DrawButtonKDExScroll("TabJourneyMap", scrollFunc, (_b) => {
         KinkyDungeonDrawState = "JourneyMap";
         KDGameData.UseJourneyTarget = false;
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonJourneyMap"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "JourneyMap", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonJourneyMap"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "JourneyMap", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
 }
 let KDInvBG = "#222222";
@@ -97163,19 +97672,25 @@ function KDDrawInventoryTabs(xOffset, drawBG = true) {
                 KinkyDungeonDrawState = amount < 0 ? "Inventory" : "Facilities";
                 break;
             case "Facilities":
-                KinkyDungeonDrawState = amount < 0 ? "Collection" : "Inventory";
+                KinkyDungeonDrawState = amount < 0 ? "Collection" : "Progress";
+                break;
+            case "Progress":
+                KinkyDungeonDrawState = amount < 0 ? "Facilities" : "Inventory";
                 break;
         }
     };
     let xxstart = 530;
     let yy = 40;
-    let num = 4;
+    let num = 5;
     let width = 1100 / num;
     let II = 0;
     DrawButtonKDExScroll("TabLore", scrollFunc, (_b) => {
         KDShowInventory(null);
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonInventory"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Inventory", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonInventory"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Inventory", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
     DrawButtonKDExScroll("TabCollection", scrollFunc, (_b) => {
         KinkyDungeonDrawState = "Collection";
@@ -97184,14 +97699,31 @@ function KDDrawInventoryTabs(xOffset, drawBG = true) {
         KDCurrentFacilityTarget = "";
         KDFacilityCollectionCallback = null;
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonCollection"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Collection", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonCollection"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Collection", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
     DrawButtonKDExScroll("TabFacilities", scrollFunc, (b) => {
         KinkyDungeonDrawState = "Facilities";
         return true;
-    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonFacilities"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Facilities", KDButtonColor);
+    }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonFacilities"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Facilities", KDButtonColor, undefined, undefined, {
+        hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+        hotkeyPress: KinkyDungeonKeyTab[II],
+    });
     II++;
+    if (KDProgressEnabled) {
+        DrawButtonKDExScroll("TabProgress", scrollFunc, (b) => {
+            KinkyDungeonDrawState = "Progress";
+            return true;
+        }, true, xxstart + II * width, yy, width - 10, 40, TextGet("KinkyDungeonProgress"), KDBaseWhite, undefined, undefined, undefined, KinkyDungeonDrawState != "Progress", KDButtonColor, undefined, undefined, {
+            hotkey: KDHotkeyToText(KinkyDungeonKeyTab[II]),
+            hotkeyPress: KinkyDungeonKeyTab[II],
+        });
+        II++;
+    }
 }
+let KDProgressEnabled = false;
 function KinkyDungeonUpdateLore(exploredLore) {
     KinkyDungeonCurrentLoreItems = [];
     if (!KinkyDungeonCurrentLoreTab)
@@ -98745,14 +99277,6 @@ function KDGoThruTile(x, y, suppressCheckPoint, force, willing) {
                 if (altRoom?.afterExit)
                     altRoom.afterExit(data);
                 KinkyDungeonSendEvent("AfterAdvance", data);
-                if (KDGameData.RoomType == "PerkRoom" && MiniGameKinkyDungeonLevel >= 1 && MiniGameKinkyDungeonLevel == KDGameData.HighestLevelCurrent) {
-                    if ((!KinkyDungeonStatsChoice.get("saveMode")) && !suppressCheckPoint) {
-                        let saveData = LZString.compressToBase64(JSON.stringify(KinkyDungeonSaveGame(true)));
-                        KinkyDungeonState = "Save";
-                        KDTextArea("saveDataField", 750, 100, 1000, 230);
-                        ElementValue("saveDataField", saveData);
-                    }
-                }
                 KinkyDungeonSaveGame();
                 KDSendStatus('nextLevel');
             }
@@ -139829,6 +140353,7 @@ const KinkyDungeonRestraints = [
     { inventory: true, trappable: true, name: "TrapLegirons", debris: "Chains", Asset: "Irish8Cuffs", LinkableBy: ["Wrapping", "Encase", "Belts"], Color: "Default", Group: "ItemFeet", blockfeet: true, addTag: ["FeetLinked"],
         power: 4, weight: 2,
         struggleBreak: true,
+        accessible: true,
         Model: "Legirons",
         linkCategory: "AnkleCuffs", linkSize: 0.51, noDupe: true, playerTagsMissingMult: { "ItemLegsFull": 0.05 },
         sfxGroup: "Handcuffs",
@@ -142068,7 +142593,7 @@ const KinkyDungeonRestraints = [
         Color: "Default", Group: "ItemArms", bindarms: true, power: 1.5, weight: 0, escapeChance: { "Struggle": 0.185, "Cut": 0.45, "Remove": 0 },
         affinity: { Remove: ["Hook"], Struggle: ["Hook"] },
         maxwill: 0.7, enemyTags: { "ropeRestraintsWrist": 4 }, playerTags: { "ItemArmsFull": -1 }, minLevel: 0, allFloors: true, shrine: ["RopeSnake", "Rope", "Ties", "Wristties"] },
-    { name: "RopeSnakeHogtieLink",
+    { name: "RopeSnakeHogtieLink", alwaysAccessible: true,
         debris: "Ropes", accessible: true,
         linkPriority: 100,
         Asset: "HempRope", Type: "Hogtied", Color: "Default",
@@ -142274,7 +142799,7 @@ const KinkyDungeonRestraints = [
             { trigger: "postUnlock", type: "RequireLocked", inheritLinked: true },
             { trigger: "postRemoval", type: "RequireBaseLegCuffs", inheritLinked: true }
         ] },
-    { name: "ChainHogtieLink",
+    { name: "ChainHogtieLink", alwaysAccessible: true,
         sfx: "Chain",
         sfxGroup: "Chains",
         binding: true,
@@ -142603,7 +143128,7 @@ const KinkyDungeonRestraints = [
             { trigger: "postRemoval", type: "RequireBaseLegCuffs", inheritLinked: true },
             { trigger: "postRemoval", type: "RequireTag", requiredTag: "CyberLegCuffs", inheritLinked: true },
         ] },
-    { name: "CyberHogtieLink",
+    { name: "CyberHogtieLink", alwaysAccessible: true,
         sfx: "BeepEngage",
         sfxRemove: "Crackling",
         binding: true,
